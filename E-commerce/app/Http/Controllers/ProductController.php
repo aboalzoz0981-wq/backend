@@ -50,6 +50,9 @@ class ProductController extends Controller
     //     $product = Product::create($validated);
     //     return response()->json($product, 201);
     // }
+    public function AddLaptop(StoreProductRequest $request){
+        
+    }
     public function AddPhone(StoreProductRequest $request){
         $this->phoneService->AddProduct($request);
         return response()->json('the product added successfully', 200);
