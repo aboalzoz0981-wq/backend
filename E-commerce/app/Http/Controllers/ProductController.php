@@ -6,6 +6,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\Accessories;
+use App\Services\LaptopService;
 use App\Services\PhoneService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,13 +17,19 @@ class ProductController extends Controller
 {
 
     protected  $phoneService;
-    public function __construct(PhoneService $phoneService)
+    protected $laptopService;
+    protected $AccessoryService;
+    public function __construct(PhoneService $phoneService, LaptopService $laptopService
+    ,Accessories $AccessoryService)
     {
         $this->phoneService = $phoneService;
+        $this->laptopService = $laptopService;
+        $this->AccessoryService = $AccessoryService;
     }
+    
     public function index()
     {
-      
+
         $products = Product::paginate(5);
         return response()->json($products, 200);
     }
@@ -31,11 +39,11 @@ class ProductController extends Controller
         $product = Product::where('name', $name)->get();
         return response()->json($product, 200);
     }
-    
+
     public function display_my_product()
     {
         $user_id = Auth::user()->id;
-        $product = Product::where('user_id',$user_id)->with('attributes')->get();
+        $product = Product::where('user_id', $user_id)->with('attributes')->get();
         return response()->json($product, 200);
     }
 
@@ -50,12 +58,19 @@ class ProductController extends Controller
     //     $product = Product::create($validated);
     //     return response()->json($product, 201);
     // }
-    public function AddLaptop(StoreProductRequest $request){
-        
+    public function AddAccessory(StoreProductRequest $request){
+        $this->AccessoryService->AddProduct($request);
+        return response()->json('the product added successfully', 201);
     }
-    public function AddPhone(StoreProductRequest $request){
+    public function AddLaptop(StoreProductRequest $request) {
+        $this->laptopService->AddProduct($request);
+        return response()->json('the product added successfully', 201);
+    }
+
+    public function AddPhone(StoreProductRequest $request)
+    {
         $this->phoneService->AddProduct($request);
-        return response()->json('the product added successfully', 200);
+        return response()->json('the product added successfully', 201);
     }
 
     public function update_product(UpdateProductRequest $request, $product_id)
