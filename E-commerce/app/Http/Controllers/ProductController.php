@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\Accessories;
+use App\Services\ElectronicParts;
 use App\Services\LaptopService;
 use App\Services\PhoneService;
 use Illuminate\Http\Request;
@@ -16,17 +18,22 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
 
-    protected  $phoneService;
+    protected $phoneService;
     protected $laptopService;
     protected $AccessoryService;
-    public function __construct(PhoneService $phoneService, LaptopService $laptopService
-    ,Accessories $AccessoryService)
-    {
+    protected $electronicPartService;
+    public function __construct(
+        PhoneService $phoneService,
+        LaptopService $laptopService,
+        Accessories $AccessoryService,
+        ElectronicParts $electronicPartService
+    ) {
         $this->phoneService = $phoneService;
         $this->laptopService = $laptopService;
         $this->AccessoryService = $AccessoryService;
+        $this->electronicPartService = $electronicPartService;
     }
-    
+
     public function index()
     {
 
@@ -58,11 +65,18 @@ class ProductController extends Controller
     //     $product = Product::create($validated);
     //     return response()->json($product, 201);
     // }
-    public function AddAccessory(StoreProductRequest $request){
+    public function AddElectronicPart(StoreProductRequest $request)
+    {
         $this->AccessoryService->AddProduct($request);
         return response()->json('the product added successfully', 201);
     }
-    public function AddLaptop(StoreProductRequest $request) {
+    public function AddAccessory(StoreProductRequest $request)
+    {
+        $this->AccessoryService->AddProduct($request);
+        return response()->json('the product added successfully', 201);
+    }
+    public function AddLaptop(StoreProductRequest $request)
+    {
         $this->laptopService->AddProduct($request);
         return response()->json('the product added successfully', 201);
     }
@@ -115,5 +129,16 @@ class ProductController extends Controller
 
         $product->delete();
         return response()->json(['message' => 'Product Deleted Successfully'], 200);
+    }
+    public function buying($productID)
+    {
+    
+        $user_id = Auth::user()->id;
+        Order::create([
+            'user_id' => $user_id,
+            'product_id' => $productID
+        ]);
+
+        return response()->json('The order has been add successfully', 201);
     }
 }

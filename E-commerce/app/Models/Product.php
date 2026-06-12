@@ -29,7 +29,13 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function attributes(){
-        return $this->belongsToMany(Value_attribute::class,'product_attributes');
+    public function attributes()
+    {
+        return $this->belongsToMany(Value_attribute::class, 'product_attributes');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

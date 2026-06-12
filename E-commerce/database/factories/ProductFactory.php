@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,6 +21,7 @@ class ProductFactory extends Factory
     {
         return [
             'user_id'=>User::inRandomOrder()->first(),
+            'brand_id'=>Brand::inRandomOrder()->first(),
             'name'=>fake()->name(),
             'price'=>fake()->numberBetween(1000,5000)
 

@@ -17,8 +17,9 @@ class LaptopService
     {
         //
     }
-    public function AddProduct(StoreProductRequest $request){
-        
+    public function AddProduct(StoreProductRequest $request)
+    {
+
         $validated = $request->validated();
         $validated['user_id'] = Auth::user()->id;
         $product = Product::create($validated);
@@ -26,16 +27,17 @@ class LaptopService
             'GPU' => 'required|string',
             'CPU' => 'required|string',
             'RAM' => 'required|string',
-            'Storage' => 'required|string'
+            'Storage' => 'required|string',
+            'Color' => 'required|string'
         ]);
         foreach ($validates as $key => $value) {
             $validate_id = Technical_Specifications::where('name', $key)->value('id');
-            if($validate_id){
-            $insertedvalue = Value_attribute::create([
-                'technical_specifications_id'=>$validate_id,
-                'value' => $value
-            ]);
-            $product->attributes()->attach($insertedvalue->id);
+            if ($validate_id) {
+                $insertedvalue = Value_attribute::create([
+                    'technical_specifications_id' => $validate_id,
+                    'value' => $value
+                ]);
+                $product->attributes()->attach($insertedvalue->id);
             }
         }
     }

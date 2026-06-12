@@ -24,11 +24,11 @@ class BrandSeeder extends Seeder
             ],
             [
                 3,
-                'Anker'
+                'Logitech G'
             ],
             [
                 4,
-                'Logitech G'
+                'Anker'
             ]            
         ];
        

@@ -21,6 +21,7 @@ class AttributesSeeder extends Seeder
             ,"GPU"
             ,"Camera"
             ,"Storage"
+            ,"Color"
             ];
 
           foreach($attributes as $attribute){

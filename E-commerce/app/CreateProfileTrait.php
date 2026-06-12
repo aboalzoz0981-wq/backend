@@ -19,15 +19,20 @@ trait CreateProfileTrait
             'name' => $request->name
         ]);
 
-        Notification::send($request->email, new UserNotification($request));
+        // Notification::send($request->email, new UserNotification($request));
     }
     public function restore_profile(User $request)
     {
         try {
             $profile = Profile::onlyTrashed()->where('user_id', $request->id)->firstOrFail();
             $profile->restore();
+            return response()->json('The profile has been restore', 200);
         } catch (Exception $e) {
-          
+            Profile::create([
+                'user_id' => $request->id,
+                'name' => $request->name
+            ]);
+            return response()->json('The profile has been add', 201);
         }
     }
 }

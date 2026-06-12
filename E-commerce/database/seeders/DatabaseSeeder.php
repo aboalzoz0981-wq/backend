@@ -18,12 +18,12 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
-            // UserSeeder::class,
-            // ProductSeeder::class
+            UserSeeder::class,
             AttributesSeeder::class,
             CatigorySeeder::class,
-            BrandSeeder::class
-            
+            BrandSeeder::class,
+            ProductSeeder::class,
+            AdminSeeder::class
         ]);
     }
 }

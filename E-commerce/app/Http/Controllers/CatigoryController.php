@@ -12,6 +12,7 @@ class CatigoryController extends Controller
     public function store(Request $request){
         $request->validate(['name'=>'required|string']);
         $catigory = Catigory::create($request->validated());
+       
         return response()->json($catigory, 201);
     }
 

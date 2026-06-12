@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProfileResource;
-use App\Http\Resources\UserResource;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-
+   
     public function display_profile()
     {
         $user_id = Auth::user()->id;
@@ -25,7 +22,7 @@ class ProfileController extends Controller
 
     public function update_profile(Request $request)
     {
-        
+
         $profile = Auth::user()->profile;
         $request->validate([
             'name' => 'string|max:255|sometimes',
@@ -53,6 +50,7 @@ class ProfileController extends Controller
     public function distroy()
     {
         $profile_id = Auth::user()->profile->id;
+        Auth::user()->currentAccessToken()->delete();
         $profile = Profile::findOrFail($profile_id);
         $profile->delete();
         return response()->json(['message' => 'the profile deleted successfully'], 200);

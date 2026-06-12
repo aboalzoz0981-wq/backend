@@ -12,7 +12,7 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $this->create_profile($user);
+       // $this->create_profile($user);
     }
 
     /**
@@ -20,7 +20,9 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
+        if($user->isDirty('verify') && $user->verfiy){
+            $this->restore_profile($user);
+        }
     }
 
     /**

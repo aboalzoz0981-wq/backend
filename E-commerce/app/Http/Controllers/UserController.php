@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\CreateProfileTrait;
 use App\Models\Profile;
+use App\Models\Registration_requests;
 
 class UserController extends Controller
 {
@@ -18,13 +19,16 @@ class UserController extends Controller
             'name' => 'required|max:255|string',
             'email' => 'email|required|unique:users,email',
             'password' => 'required|min:8|confirmed',
+            'role' => 'required'
         ]);
-        $user = User::create([
+
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'role' => $request->role
         ]);
-        return response()->json(['message' => 'User Registered Successfully', 'user' => $user], 201);
+        return response()->json(['message' => 'The request has been sent successfully'], 201);
     }
 
 

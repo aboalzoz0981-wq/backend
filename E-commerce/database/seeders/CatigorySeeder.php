@@ -17,7 +17,7 @@ class CatigorySeeder extends Seeder
             'Phones',
             'Laptops',
             'Accessories',
-            'Gaming',
+            'Electronic_Parts',
         ];
         foreach($catigories as $catigory){
             Catigory::create(['name'=>$catigory]);
